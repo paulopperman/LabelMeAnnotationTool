@@ -39,12 +39,17 @@ ENV APACHE_ALLOW_OVERRIDE               None
 ENV APACHE_ALLOW_ENCODED_SLASHES        Off
 
 # deploy repo
-RUN cd /var/www/ \
-    && rm -rf html \
-    && git clone https://github.com/paulopperman/LabelMeAnnotationTool.git html \
-    && cd html \
-    && make \
-    && chown -R ${APACHE_RUN_USER}:${APACHE_RUN_GROUP} /var/www
+# RUN cd /var/www/ \
+#    && rm -rf html \
+#    && git clone https://github.com/paulopperman/LabelMeAnnotationTool.git html \
+#    && cd html \
+#    && make \
+#    && chown -R ${APACHE_RUN_USER}:${APACHE_RUN_GROUP} /var/www
+
+# deploy local repo
+WORKDIR /var/www/
+ADD . /var/www/html/
+RUN cd html && make && chown -R ${APACHE_RUN_USER}:${APACHE_RUN_GROUP} /var/www
 
 # port binding
 EXPOSE 80
